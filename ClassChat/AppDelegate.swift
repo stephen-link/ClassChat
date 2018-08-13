@@ -7,14 +7,17 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var authHandle : AuthStateDidChangeListenerHandle?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        FirebaseApp.configure()
         // Override point for customization after application launch.
         return true
     }
@@ -35,6 +38,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        self.authHandle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            weak var navController = self.window?.rootViewController as? UINavigationController
+            
+            if let userUnwrapped = user {
+                
+                print("gotta be somewhere*************************")
+                
+                weak var dash = navController?.viewControllers[0] as? DashboardController
+                if dash == nil {
+                    print("dash is nil")
+                } else {
+                    print("dash is defined")
+                }
+                dash?.user = userUnwrapped
+                dash?.authenticateUser()
+            } else {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let firstVC = storyboard.instantiateViewController(withIdentifier: "Auth")
+                
+                //navController.setNavigationBarHidden(true, animated: true)
+                navController?.pushViewController(firstVC, animated: true)
+                //self.window?.rootViewController = firstVC
+                print("we here ********************************")
+            }
+        }
+        
+        print("applicationDidBecomeActive")
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
