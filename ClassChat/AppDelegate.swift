@@ -43,24 +43,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             if let userUnwrapped = user {
                 
-                print("gotta be somewhere*************************")
+                
                 
                 weak var dash = navController?.viewControllers[0] as? DashboardController
-                if dash == nil {
-                    print("dash is nil")
-                } else {
-                    print("dash is defined")
-                }
                 dash?.user = userUnwrapped
-                dash?.authenticateUser()
+                print("user set from AppDelegate")
             } else {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let firstVC = storyboard.instantiateViewController(withIdentifier: "Auth")
-                
-                //navController.setNavigationBarHidden(true, animated: true)
-                navController?.pushViewController(firstVC, animated: true)
-                //self.window?.rootViewController = firstVC
-                print("we here ********************************")
+                let authHub = storyboard.instantiateViewController(withIdentifier: "Auth")
+                navController?.pushViewController(authHub, animated: true)
+                print("no current user, pushing AuthHub")
             }
         }
         

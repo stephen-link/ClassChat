@@ -13,53 +13,42 @@ import FirebaseAuth
 
 class RegisterController: UIViewController {
 
+    //MARK: - Instance Variables and Outlets
+    
     var ref : DatabaseReference!
     var emailEntered : Bool = false
     var passwordEntered : Bool = false
+    
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var usernameTextField: UITextField!
+    
+    //MARK: - View Controller Functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        emailTextField.tag = 1
-        passwordTextField.tag = 2
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    
+
+    //MARK: - Auth Functions
     
     @IBAction func registerButtonPressed(_ sender: RoundedButton) {
-        // Note: If both fields are empty, error will be weak password
+        // Note: If both email and password fields are empty, error will be weak password, so the case of empty text fields is handled
         //if emailTextField.text != "" && passwordTextField.text != "" {
-            Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
-                if error != nil {
-                    if let errorCode = AuthErrorCode(rawValue: error!._code) {
-                        self.handleRegistrationErrors(errorCode)
-                        print(error!._code)
-                    }
-                } else {
-                    //let myUser = MyUser(email: self.emailTextField.text!, password: self.passwordTextField.text!, uid: user!.uid)
-                    //Note: In a production app, the user's password would not be stored in plain text
-                    let userData = ["email" : self.emailTextField.text!, "password" : self.passwordTextField.text!, "uid" : user!.uid]
-                    self.ref.child("users/\(user!.uid)").setValue(userData)
-                    print("Registration Complete")
-                    self.navigationController?.popToRootViewController(animated: true)
-                }
-            })
+        if usernameTextField.text! != "" {
+            registerUser(username: usernameTextField.text!, email: emailTextField.text!, password: passwordTextField.text!)
+        } else {
+            handleRegistrationErrors(AuthErrorCode.weakPassword)
+        }
        
     }
     
-    @IBAction func cancelButtonPressed(_ sender: RoundedButton) {
-        dismiss(animated: true, completion: nil)
-    }
-    
+    //Present an error message based on the AuthErrorCode received
     func handleRegistrationErrors(_ errorCode: AuthErrorCode) {
         print("Registration Error Triggered")
         
@@ -71,7 +60,7 @@ class RegisterController: UIViewController {
             errMsg = "This Email Address has already been registered"
         case AuthErrorCode.weakPassword:
             //If both fields are empty, error thrown will be weak password, check for that case here
-            if self.emailTextField.text! == "" {
+            if self.usernameTextField.text! == "" || self.emailTextField.text! == "" {
                 errMsg = "Please Enter All Fields"
             } else {
                 errMsg = "Passwords must be 6 or more characters long"
@@ -92,14 +81,31 @@ class RegisterController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    /*
-    // MARK: - Navigation
+    //register the user, present error message if error is encountered; send user data to database
+    func registerUser(username: String, email: String, password: String) {
+        Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
+           
+            if error != nil {
+                if let errorCode = AuthErrorCode(rawValue: error!._code) {
+                    self.handleRegistrationErrors(errorCode)
+                    print(error!._code)
+                }
+            } else {
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+                //send user data to database
+                let userData = ["uid" : user!.uid, "username" : username, "email" : email, "groups" : Dictionary<String,String>()] as [String : Any]
+                self.ref.child("users/\(user!.uid)").setValue(userData)
+                print("Registration Complete")
+                //if registration is successful, pop to root VC, which is the Dashboard Controller
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+        })
     }
-    */
+    
+    // MARK: - Navigation
+    
+    @IBAction func cancelButtonPressed(_ sender: RoundedButton) {
+        dismiss(animated: true, completion: nil)
+    }
 
 }

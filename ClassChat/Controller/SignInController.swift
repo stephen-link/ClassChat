@@ -11,10 +11,14 @@ import Firebase
 import FirebaseAuth
 
 class SignInController: UIViewController {
-
+    
+    //MARK: - Instance Variables and Outlets
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    
+    //MARK: - View Controller Functions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,20 +31,26 @@ class SignInController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: - Auth Functions
+    
     @IBAction func signInButtonPressed(_ sender: RoundedButton) {
+        //check if text fields have been entered
         if emailTextField.text != "" && passwordTextField.text != "" {
+            
             Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
                 if error != nil {
                     let errorCode = AuthErrorCode(rawValue: error!._code)!
                     self.handleSignInErrors(errorCode)
                 } else {
                     print("Login successful")
+                    //if the login is successful, pop to root VC, which is the Dashboard Controller
                     self.navigationController?.popToRootViewController(animated: true)
                 }
             })
         }
     }
     
+    //Present an error message based on the AuthErrorCode received
     func handleSignInErrors(_ errorCode: AuthErrorCode) {
        
         var errMsg : String = ""
@@ -66,18 +76,11 @@ class SignInController: UIViewController {
         
     }
     
+    // MARK: - Navigation
     
     @IBAction func cancelButtonPressed(_ sender: RoundedButton) {
         dismiss(animated: true, completion: nil)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
 
 }
