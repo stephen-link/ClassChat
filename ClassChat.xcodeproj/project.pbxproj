@@ -21,6 +21,9 @@
 		056CF7F22117FC6600FA2E87 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056CF7F12117FC6600FA2E87 /* RegisterController.swift */; };
 		056CF7F42118295F00FA2E87 /* MyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056CF7F32118295F00FA2E87 /* MyUser.swift */; };
 		0576293D2131C47D0053E934 /* GroupInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0576293C2131C47D0053E934 /* GroupInfo.swift */; };
+		05768C64213C81AD00C3E6A8 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05768C63213C81AC00C3E6A8 /* ChatViewController.swift */; };
+		05768C66213C884000C3E6A8 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05768C65213C884000C3E6A8 /* Message.swift */; };
+		05768C68213C92EC00C3E6A8 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05768C67213C92EC00C3E6A8 /* MessageCell.swift */; };
 		057BC579211F73B90079EBBD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 057BC578211F73B80079EBBD /* GoogleService-Info.plist */; };
 		057BC57B211FB2700079EBBD /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057BC57A211FB2700079EBBD /* DashboardController.swift */; };
 		057BC57D212284080079EBBD /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057BC57C212284080079EBBD /* GroupCell.swift */; };
@@ -67,6 +70,9 @@
 		056CF7F12117FC6600FA2E87 /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		056CF7F32118295F00FA2E87 /* MyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUser.swift; sourceTree = "<group>"; };
 		0576293C2131C47D0053E934 /* GroupInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupInfo.swift; sourceTree = "<group>"; };
+		05768C63213C81AC00C3E6A8 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		05768C65213C884000C3E6A8 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		05768C67213C92EC00C3E6A8 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		057BC578211F73B80079EBBD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		057BC57A211FB2700079EBBD /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		057BC57C212284080079EBBD /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
@@ -169,6 +175,7 @@
 				056CF7EB2117F4C900FA2E87 /* RoundedButton.swift */,
 				056CF7F32118295F00FA2E87 /* MyUser.swift */,
 				0576293C2131C47D0053E934 /* GroupInfo.swift */,
+				05768C65213C884000C3E6A8 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -180,6 +187,7 @@
 				056CF7C32116CA7E00FA2E87 /* LaunchScreen.storyboard */,
 				057BC57C212284080079EBBD /* GroupCell.swift */,
 				055797AF21266E5400BAACCE /* AddGroupCell.swift */,
+				05768C67213C92EC00C3E6A8 /* MessageCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -192,6 +200,7 @@
 				056CF7F12117FC6600FA2E87 /* RegisterController.swift */,
 				057BC57A211FB2700079EBBD /* DashboardController.swift */,
 				055797AD212665E800BAACCE /* AddGroupController.swift */,
+				05768C63213C81AC00C3E6A8 /* ChatViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -448,8 +457,11 @@
 				056CF7F42118295F00FA2E87 /* MyUser.swift in Sources */,
 				057BC57B211FB2700079EBBD /* DashboardController.swift in Sources */,
 				056CF7EE2117FB1A00FA2E87 /* AuthenticationHubController.swift in Sources */,
+				05768C66213C884000C3E6A8 /* Message.swift in Sources */,
 				055797AE212665E800BAACCE /* AddGroupController.swift in Sources */,
+				05768C64213C81AD00C3E6A8 /* ChatViewController.swift in Sources */,
 				057BC57D212284080079EBBD /* GroupCell.swift in Sources */,
+				05768C68213C92EC00C3E6A8 /* MessageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

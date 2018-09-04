@@ -18,6 +18,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     let formatter = DateFormatter()
     var initializationComplete : Bool = false
     var groups : [GroupInfo] = [GroupInfo]()
+    var selectedGroup : GroupInfo?
     
     //store the id and observer handle of groups so that observers can be removed when view disappears
     var groupHandles : Dictionary<String,UInt> = Dictionary<String,UInt>()
@@ -88,7 +89,8 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //
+        self.selectedGroup = self.groups[indexPath.row]
+        performSegue(withIdentifier: "chatSelected", sender: self)
     }
     
     //MARK: - User / Database Functions
@@ -117,6 +119,8 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         //reset groups array when user is authenticated (in case there was previously a different user logged in)
         self.groups = [GroupInfo]()
         
+        groupTableView.reloadData()
+        
         ref.child("users/\(user!.uid)").observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
                 let userData = snapshot.value as! Dictionary<String,AnyObject>
@@ -138,6 +142,9 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             print("id: \(id)")
             let groupHandle = self.ref.child("groups/\(id)").observe(.value, with: { (snapshot) in
                 if let data = snapshot.value as? Dictionary<String,String> {
+                    
+                    //create groupInfo struct with data from Firebase, safely unwrap the data with a default value using the nil-coalescing operator "??"
+                    // in the case of the timestamp, the value must first be unwrapped as a string, then casted and unwrapped as a double
                     let groupInfo = GroupInfo(id: data["id"] ?? "", title: data["title"] ?? "", lastMessage: data["lastMessage"] ?? "", timestamp: Double(data["timestamp"] ?? "") ?? 0, profileImageURL: data["profileImageURL"] ?? "")
                     
                     //check if user is already in the group, replace the groupInfo with updated data if they are
@@ -196,6 +203,14 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             let destination = segue.destination as! AddGroupController
             if let userObjUnwrapped = self.userObj {
                 destination.userObj = userObjUnwrapped
+            }
+        } else if segue.identifier == "chatSelected" {
+            let destination = segue.destination as! ChatViewController
+            if let userObjUnwrapped = self.userObj {
+                destination.userObj = userObjUnwrapped
+            }
+            if let selectedGroupUnW = self.selectedGroup {
+                destination.group = selectedGroupUnW
             }
         }
     }
