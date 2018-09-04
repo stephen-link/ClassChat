@@ -7,14 +7,17 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var authHandle : AuthStateDidChangeListenerHandle?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        FirebaseApp.configure()
         // Override point for customization after application launch.
         return true
     }
@@ -35,6 +38,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        self.authHandle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            weak var navController = self.window?.rootViewController as? UINavigationController
+            
+            if let userUnwrapped = user {
+                
+                
+                
+                weak var dash = navController?.viewControllers[0] as? DashboardController
+                dash?.user = userUnwrapped
+                print("user set from AppDelegate")
+            } else {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let authHub = storyboard.instantiateViewController(withIdentifier: "Auth")
+                navController?.pushViewController(authHub, animated: true)
+                print("no current user, pushing AuthHub")
+            }
+        }
+        
+        print("applicationDidBecomeActive")
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

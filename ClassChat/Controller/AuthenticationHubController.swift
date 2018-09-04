@@ -8,6 +8,7 @@
 
 import UIKit
 
+//This view basically just holds buttons to segue to the Sign In and Register Views
 class AuthenticationHubController: UIViewController {
 
     override func viewDidLoad() {
@@ -21,6 +22,10 @@ class AuthenticationHubController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //Since this view is pushed by a navigationController, I want to hide the navigation bar 
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
     
     /*
     // MARK: - Navigation
