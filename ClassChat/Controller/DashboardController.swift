@@ -75,10 +75,12 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: - Table View Functions
     
+    //There should be as many cells as there are Groups the user is a member of
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groups.count
     }
     
+    //groupInfo objects in groups array will be already sorted by timestamp, display the information in the UI
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "groupCell", for: indexPath) as! GroupCell
         let groupInfo = self.groups[indexPath.row]
@@ -88,6 +90,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         return cell
     }
     
+    //If a group is selected, segue to ChatViewController
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.selectedGroup = self.groups[indexPath.row]
         performSegue(withIdentifier: "chatSelected", sender: self)
@@ -97,9 +100,12 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //format timestamps stored in Firebase to human readable time
     func formatTime(timestamp: Double) -> String {
+       
+       
         let currentTime = Date().timeIntervalSince1970
         let lastMessageDate = Date(timeIntervalSince1970: timestamp)
         let time = self.formatter.string(from: lastMessageDate)
+         //the formatter will date as well as time, seperated by a ;
         let dateTime = time.split(separator: ";")
         
         let timeDifference = currentTime - timestamp
@@ -112,6 +118,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    //once the user is received from AppDelegate, retrieve their info from firebase
     func authenticateUser() {
         print("authenticate user called")
         print("uid: \(user!.uid)")
@@ -134,7 +141,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
     }
-    
+    //Retrieve group info and setup observers on the user's subscribed groups
     func retrieveGroups() {
         self.numberGroups = self.userObj!.groups.count
         
@@ -156,6 +163,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
                         self.groups.append(groupInfo)
                     }
                     
+                    //if all groups have been retrieved and are being observed, sort the groups by timestamps, and then display in tableView
                     if self.groups.count == self.numberGroups {
                         print("all groups retrieved, sorting")
                         self.groups.sort(by: self.sortGroupInfo(this:that:))
@@ -198,6 +206,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    //Send information to view controller based on which one is being segued to
     override func  prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "dashToAdd" {
             let destination = segue.destination as! AddGroupController

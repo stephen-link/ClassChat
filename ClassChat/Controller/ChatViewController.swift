@@ -62,11 +62,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         retrieveMessages()
     }
     
+    //remove observers when the view disappears to increase efficiency
     override func viewDidDisappear(_ animated: Bool) {
         removeKeyboardObservers()
         removeDatabaseListener()
     }
     
+    //send the contents of the messageTextView as a message, clear messageTextView
     @IBAction func sendButtonPressed(_ sender: UIButton) {
         sendMessage(message: self.messageTextView.text!)
         self.messageTextView.text = ""
@@ -80,6 +82,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         return messages.count
     }
     
+    //populate UI with message info
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = chatTableView.dequeueReusableCell(withIdentifier: "messageCell") as! MessageCell
         cell.senderLabel.text = messages[indexPath.row].sender
@@ -87,6 +90,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
+    //when the messageTextView changes, assess whether or not the textView's size must be increased. If it increases to a threshold of 228, it will remain that size and become scrollable
     func textViewDidChange(_ textView: UITextView) {
         if containerViewHeight.constant > 228.0 {
             messageTextView.isScrollEnabled = true
@@ -102,6 +106,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    //clear the placeholder message when editing begins
     func textViewDidBeginEditing(_ textView: UITextView) {
         if messageTextView.text! == "Enter Message..." {
             messageTextView.text = ""
@@ -111,12 +116,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     // MARK: - Keyboard Animation Functions
-    
+    //add observers for when the keyboard is hidden or showed
     func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    //when the keyboard shows, adjust the inputContainerView with the keyboard
     @objc func handleKeyboardWillShow(notification: NSNotification) {
         let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect
         inputContainerViewBottomConstraint.constant = -keyboardFrame!.height
@@ -128,6 +134,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    //when keyboard is hidden, return container view to bottom of screen
     @objc func handleKeyboardWillHide(notification: NSNotification) {
         inputContainerViewBottomConstraint.constant = 0
         inputContainerViewBottomConstraint.isActive = true
@@ -138,12 +145,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    //remove observers when this view disappears
     func removeKeyboardObservers() {
         NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: - Messaging Functions
     
+    //retrieve messages to be displayed in UI
     func retrieveMessages() {
         messageHandle = ref.child("messages/\(self.group.id)").observe(.childAdded, with: { (snapshot) in
             if let messageData = snapshot.value as? Dictionary<String,String> {
@@ -156,6 +165,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         })
     }
     
+    //send relevant info to firebase when send button is pressed
     func sendMessage(message: String) {
         if let userObjUnW = userObj {
             let timestamp = NSDate().timeIntervalSince1970 as NSNumber
@@ -167,6 +177,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             //update groupDB
             let groupData = ["lastMessage" : message, "timestamp" : "\(timestamp)"]
             ref.child("groups/\(group.id)").updateChildValues(groupData)
+            
+            self.messageTextView.text = ""
+            self.messageTextViewHeight.constant = 34
+            self.containerViewHeight.constant = 50
+            self.messageTextView.isScrollEnabled = false
         }
     }
     
