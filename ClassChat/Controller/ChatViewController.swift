@@ -42,7 +42,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         //setup tableView
         chatTableView.delegate = self
         chatTableView.dataSource = self
+        chatTableView.rowHeight = UITableViewAutomaticDimension
+        chatTableView.estimatedRowHeight = 70
+        chatTableView.isScrollEnabled = false
         
+        //setup textView
         messageTextView.delegate = self
         
         //Setup message input box (container view) to rise and fall with keyboard
@@ -93,12 +97,17 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     //when the messageTextView changes, assess whether or not the textView's size must be increased. If it increases to a threshold of 228, it will remain that size and become scrollable
     func textViewDidChange(_ textView: UITextView) {
         if containerViewHeight.constant > 228.0 {
+            print("setting textView to scrollable")
             messageTextView.isScrollEnabled = true
+            
+            //text view needs to be resized
         } else if messageTextView.intrinsicContentSize.height > messageTextViewHeight.constant {
             print("ChatViewController: resizing message text view")
             let sizeToFitIn = CGSize(width: self.messageTextView.bounds.size.width, height: CGFloat(MAXFLOAT))
             let newSize = self.messageTextView.sizeThatFits(sizeToFitIn)
             let deltaSize = newSize.height - messageTextViewHeight.constant
+            
+            //increase the height of the container view by the amount the textView needs to increase
             self.containerViewHeight.constant = self.containerViewHeight.constant + deltaSize
             self.messageTextViewHeight.constant = newSize.height
             print("container view height: \(containerViewHeight.constant)")
@@ -122,11 +131,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    //when the keyboard shows, adjust the inputContainerView with the keyboard
+    //when the keyboard shows, adjust the inputContainerView with the keyboard, clear placeholder message if not already cleared
     @objc func handleKeyboardWillShow(notification: NSNotification) {
         let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect
         inputContainerViewBottomConstraint.constant = -keyboardFrame!.height
         inputContainerViewBottomConstraint.isActive = true
+        
+        if messageTextView.text! == "Enter Message..." {
+            messageTextView.text = ""
+        }
         
         let duration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double
         UIView.animate(withDuration: duration!) {
@@ -134,10 +147,12 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    //when keyboard is hidden, return container view to bottom of screen
+    //when keyboard is hidden, return container view to bottom of screen and replace placeholder message
     @objc func handleKeyboardWillHide(notification: NSNotification) {
         inputContainerViewBottomConstraint.constant = 0
         inputContainerViewBottomConstraint.isActive = true
+        
+        messageTextView.text = "Enter Message..."
         
         let duration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double
         UIView.animate(withDuration: duration!) {

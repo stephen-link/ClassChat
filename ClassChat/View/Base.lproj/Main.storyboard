@@ -287,7 +287,7 @@
                                             <action selector="sendButtonPressed:" destination="iux-Oi-28z" eventType="touchUpInside" id="Q4w-E2-SM7"/>
                                         </connections>
                                     </button>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Enter Message..." translatesAutoresizingMaskIntoConstraints="NO" id="DcW-xz-j5W">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Enter Message..." translatesAutoresizingMaskIntoConstraints="NO" id="DcW-xz-j5W">
                                         <rect key="frame" x="0.0" y="8" width="300" height="34"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -337,6 +337,7 @@
                                                     <color key="backgroundColor" red="0.18039215689999999" green="0.80000000000000004" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="48" id="ZYQ-yZ-ITK"/>
+                                                        <constraint firstAttribute="height" constant="48" id="nCN-04-dI1"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zh7-wD-IsX">
@@ -348,7 +349,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMH-GA-ZEh">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMH-GA-ZEh">
                                                     <rect key="frame" x="71" y="29" width="289" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
@@ -356,7 +357,6 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="mfw-B9-a0R" secondAttribute="bottom" id="4Rk-KJ-egt"/>
                                                 <constraint firstItem="CMH-GA-ZEh" firstAttribute="leading" secondItem="mfw-B9-a0R" secondAttribute="trailing" constant="8" id="Fpe-eS-CBR"/>
                                                 <constraint firstItem="Zh7-wD-IsX" firstAttribute="width" secondItem="B57-R2-ll5" secondAttribute="width" multiplier="0.5" id="jsi-70-78I"/>
                                                 <constraint firstItem="Zh7-wD-IsX" firstAttribute="top" secondItem="B57-R2-ll5" secondAttribute="topMargin" id="mbV-x4-fdV"/>
