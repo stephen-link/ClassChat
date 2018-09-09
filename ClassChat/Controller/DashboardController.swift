@@ -87,6 +87,8 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         cell.groupTitleLabel.text = groupInfo.title
         cell.lastMessageLabel.text = groupInfo.lastMessage
         cell.timestampLabel.text = formatTime(timestamp: groupInfo.timestamp)
+        
+        
         return cell
     }
     
@@ -131,7 +133,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         ref.child("users/\(user!.uid)").observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
                 let userData = snapshot.value as! Dictionary<String,AnyObject>
-                self.userObj = MyUser(email: userData["email"] as? String ?? "", password: userData["password"] as? String ?? "", uid: userData["uid"] as? String ?? "", username: userData["username"] as? String ?? "", groups: userData["groups"] as? Dictionary<String,String> ?? Dictionary<String,String>())
+                self.userObj = MyUser(email: userData["email"] as? String ?? "", uid: userData["uid"] as? String ?? "", username: userData["username"] as? String ?? "", groups: userData["groups"] as? Dictionary<String,String> ?? Dictionary<String,String>(), profileImageURL: userData["profileImageURL"] as? String ?? "")
                 print("user authenticated")
                 self.initializationComplete = true
                 self.retrieveGroups()
@@ -197,14 +199,9 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: - Navigation
     
     //logout user
-    @IBAction func logoutButtonPressed(_ sender: UIBarButtonItem) {
-        do {
-            try Auth.auth().signOut()
-            print("Logout Successful!")
-        } catch {
-            print("Logout: there's a problem")
-        }
-    }
+    
+    
+    
     
     //Send information to view controller based on which one is being segued to
     override func  prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -220,6 +217,13 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             if let selectedGroupUnW = self.selectedGroup {
                 destination.group = selectedGroupUnW
+            }
+        } else if segue.identifier == "menuOpened" {
+            let destination = segue.destination as! DashboardMenuController
+            if let userObjUnW = self.userObj {
+                destination.userObj = userObjUnW
+            } else {
+                destination.userObj = MyUser()
             }
         }
     }

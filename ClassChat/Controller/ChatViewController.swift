@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SDWebImage
 
 class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
     
@@ -34,6 +35,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //initialize ref
         ref = Database.database().reference()
         
         //set chat title
@@ -42,9 +44,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         //setup tableView
         chatTableView.delegate = self
         chatTableView.dataSource = self
+        
+        //this will allow the table view to automatically resize table view cells based on the length of the message
         chatTableView.rowHeight = UITableViewAutomaticDimension
         chatTableView.estimatedRowHeight = 70
-        chatTableView.isScrollEnabled = false
+        
         
         //setup textView
         messageTextView.delegate = self
@@ -52,15 +56,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         //Setup message input box (container view) to rise and fall with keyboard
         setupKeyboardObservers()
         
-        
-        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    //retrieve messages when view appears
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         retrieveMessages()
@@ -82,15 +84,27 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     //MARK: - Table and Text View Functions
     
+    //# cells = # messages
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
     
-    //populate UI with message info
+    //populate UI with message info, they will already be sorted by timestamp due to Firebase's childByAutoID
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = chatTableView.dequeueReusableCell(withIdentifier: "messageCell") as! MessageCell
         cell.senderLabel.text = messages[indexPath.row].sender
         cell.messageLabel.text = messages[indexPath.row].message
+        
+        let url = URL(string: messages[indexPath.row].profileImageURL)
+        
+        //set the profile image with the url from the user who sent the message. If they haven't set a profile image, the "profile_default" image will be displayed
+        cell.profileImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "profile_default"), options:  .highPriority, completed: { (image, error, cache, url) in
+            if error != nil {
+                print("MessageViewController: error retrieving profileImage")
+                print("Error: \(error!)")
+            }
+        })
+        
         return cell
     }
     
@@ -125,6 +139,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     // MARK: - Keyboard Animation Functions
+    
     //add observers for when the keyboard is hidden or showed
     func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -137,6 +152,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         inputContainerViewBottomConstraint.constant = -keyboardFrame!.height
         inputContainerViewBottomConstraint.isActive = true
         
+        //if the keyboard shows and the placeholder message is in place, clear it
         if messageTextView.text! == "Enter Message..." {
             messageTextView.text = ""
         }
@@ -152,6 +168,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         inputContainerViewBottomConstraint.constant = 0
         inputContainerViewBottomConstraint.isActive = true
         
+        //when keyboard hides, replace placeholder message
         messageTextView.text = "Enter Message..."
         
         let duration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double
@@ -171,6 +188,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     func retrieveMessages() {
         messageHandle = ref.child("messages/\(self.group.id)").observe(.childAdded, with: { (snapshot) in
             if let messageData = snapshot.value as? Dictionary<String,String> {
+                
+                //initialize message object with Firebase data, using empty string as a default value if it is nil
                 let message = Message(sender: messageData["sender"] ?? "", message: messageData["message"] ?? "", timestamp: Double(messageData["timestamp"] ?? "") ?? 0, profileImageURL: messageData["profileImageURL"] ?? "")
                 self.messages.append(message)
                 self.chatTableView.reloadData()
@@ -186,13 +205,14 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             let timestamp = NSDate().timeIntervalSince1970 as NSNumber
         
             // update messagesDB
-            let messageData = ["message" : message, "sender" : userObjUnW.username, "senderID" : userObjUnW.uid, "timestamp" : "\(timestamp)"]
+            let messageData = ["message" : message, "sender" : userObjUnW.username, "senderID" : userObjUnW.uid, "timestamp" : "\(timestamp)", "profileImageURL" : userObjUnW.profileImageURL]
             ref.child("messages/\(group.id)").childByAutoId().setValue(messageData)
             
             //update groupDB
             let groupData = ["lastMessage" : message, "timestamp" : "\(timestamp)"]
             ref.child("groups/\(group.id)").updateChildValues(groupData)
             
+            //reset size of container view elements in case they have been resized due to the length of the message
             self.messageTextView.text = ""
             self.messageTextViewHeight.constant = 34
             self.containerViewHeight.constant = 50
@@ -200,6 +220,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    //remove database observer for efficiency
     func removeDatabaseListener() {
         if let handle = self.messageHandle {
             ref.child("messages/\(group.id)").removeObserver(withHandle: handle)

@@ -34,7 +34,7 @@ class AddGroupController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("name: \(self.userObj.email), uid: \(self.userObj.uid), name: \(self.userObj.password)")
+        super.viewWillAppear(true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

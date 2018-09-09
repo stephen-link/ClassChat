@@ -10,20 +10,20 @@ import Foundation
 
 class MyUser: NSObject {
     var email: String
-    var password: String
     var username: String
     var uid: String
     var groups: Dictionary<String,String>
+    var profileImageURL : String
     
-    init(email: String, password: String, uid: String, username: String, groups: Dictionary<String,String>) {
+    init(email: String, uid: String, username: String, groups: Dictionary<String,String>, profileImageURL: String) {
         self.email = email
-        self.password = password
         self.uid = uid
         self.username = username
         self.groups = groups
+        self.profileImageURL = profileImageURL
     }
     
     convenience override init() {
-        self.init(email: "what", password: "how", uid: "aye", username: "bruh", groups: Dictionary<String,String>())
+        self.init(email: "what", uid: "aye", username: "Error", groups: Dictionary<String,String>(), profileImageURL: "")
     }
 }
