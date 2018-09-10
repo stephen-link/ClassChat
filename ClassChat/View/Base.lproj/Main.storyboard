@@ -196,6 +196,9 @@
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A9r-ed-Zht" userLabel="timestampLabel">
                                                     <rect key="frame" x="279" y="11" width="81" height="16"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="81" id="txN-qp-WSi"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -277,16 +280,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="emL-q2-oBa">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJx-my-5kP">
-                                        <rect key="frame" x="300.5" y="0.0" width="75.5" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="WpE-XG-ITD"/>
-                                        </constraints>
-                                        <state key="normal" title="Send"/>
-                                        <connections>
-                                            <action selector="sendButtonPressed:" destination="iux-Oi-28z" eventType="touchUpInside" id="Q4w-E2-SM7"/>
-                                        </connections>
-                                    </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Enter Message..." translatesAutoresizingMaskIntoConstraints="NO" id="DcW-xz-j5W">
                                         <rect key="frame" x="0.0" y="8" width="300" height="34"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -303,12 +296,22 @@
                                             <constraint firstAttribute="height" constant="1" id="yea-Q2-rS5"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJx-my-5kP">
+                                        <rect key="frame" x="300" y="0.0" width="75.5" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="WpE-XG-ITD"/>
+                                        </constraints>
+                                        <state key="normal" title="Send"/>
+                                        <connections>
+                                            <action selector="sendButtonPressed:" destination="iux-Oi-28z" eventType="touchUpInside" id="Q4w-E2-SM7"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="DcW-xz-j5W" firstAttribute="leading" secondItem="emL-q2-oBa" secondAttribute="leading" id="0Zl-RU-gfx"/>
+                                    <constraint firstItem="VJx-my-5kP" firstAttribute="leading" relation="lessThanOrEqual" secondItem="DcW-xz-j5W" secondAttribute="trailing" id="5uq-uc-yCc"/>
                                     <constraint firstItem="DcW-xz-j5W" firstAttribute="bottom" secondItem="emL-q2-oBa" secondAttribute="bottomMargin" id="7Hx-C3-6mF"/>
-                                    <constraint firstItem="VJx-my-5kP" firstAttribute="leading" secondItem="DcW-xz-j5W" secondAttribute="trailing" id="9wp-Iw-5T9"/>
                                     <constraint firstAttribute="bottom" secondItem="VJx-my-5kP" secondAttribute="bottom" id="BMB-PS-A7Z"/>
                                     <constraint firstAttribute="trailing" secondItem="VJx-my-5kP" secondAttribute="trailing" id="DUH-E8-pJe"/>
                                     <constraint firstAttribute="height" constant="50" id="TI3-vL-1rs"/>
@@ -395,7 +398,7 @@
                     <navigationItem key="navigationItem" title="Title" id="VTE-k6-4me">
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="Vp9-AC-9nh">
                             <connections>
-                                <segue destination="Pwr-79-tuJ" kind="show" id="k1l-6y-nxE"/>
+                                <segue destination="Pwr-79-tuJ" kind="show" identifier="editGroup" id="k1l-6y-nxE"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -412,20 +415,41 @@
             </objects>
             <point key="canvasLocation" x="3386" y="1397"/>
         </scene>
-        <!--View Controller-->
+        <!--Title-->
         <scene sceneID="tpu-B5-cRc">
             <objects>
-                <viewController id="Pwr-79-tuJ" sceneMemberID="viewController">
+                <viewController id="Pwr-79-tuJ" customClass="GroupOptionsController" customModule="ClassChat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Hr2-ap-KKK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3cV-vg-WJZ">
+                                <rect key="frame" x="91" y="119" width="192" height="192"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2pw-Iq-yqq" customClass="RoundedButton" customModule="ClassChat" customModuleProvider="target">
+                                <rect key="frame" x="91" y="372" width="192" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.18039215689999999" green="0.80000000000000004" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Edit Group Image"/>
+                                <connections>
+                                    <action selector="editGroupImagePressed:" destination="Pwr-79-tuJ" eventType="touchUpInside" id="kEV-ge-7dl"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="UKw-VN-896"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Title" id="SCB-eV-r2E"/>
+                    <connections>
+                        <outlet property="groupImageView" destination="3cV-vg-WJZ" id="40k-Gl-X0K"/>
+                        <outlet property="navItem" destination="SCB-eV-r2E" id="mc0-uK-Jye"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zQt-al-9Z0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4110" y="1397"/>
+            <point key="canvasLocation" x="4109.6000000000004" y="1396.5517241379312"/>
         </scene>
         <!--Title-->
         <scene sceneID="Ty0-gQ-YSH">
@@ -470,6 +494,17 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jxV-kO-M4M">
+                                <rect key="frame" x="91" y="544" width="192" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Log Out">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="logoutButtonPressed:" destination="ryW-Z9-akd" eventType="touchUpInside" id="InD-hg-oPJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="cf3-pC-udf"/>

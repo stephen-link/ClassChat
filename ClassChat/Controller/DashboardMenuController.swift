@@ -69,6 +69,16 @@ class DashboardMenuController: UIViewController, UIImagePickerControllerDelegate
         dismiss(animated: true, completion: nil)
     }
     
+    //logout user, AppDelegate will see this, and push the authentication hub
+    @IBAction func logoutButtonPressed(_ sender: Any) {
+        do {
+            try Auth.auth().signOut()
+            print("Logout Successful!")
+            dismiss(animated: true, completion: nil)
+        } catch {
+            print("Logout: there's a problem")
+        }
+    }
     
     //MARK: - Image Picker Functions
     

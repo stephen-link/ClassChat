@@ -88,6 +88,16 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         cell.lastMessageLabel.text = groupInfo.lastMessage
         cell.timestampLabel.text = formatTime(timestamp: groupInfo.timestamp)
         
+        let url = URL(string: groups[indexPath.row].groupImageURL)
+        
+        //set the group image with the url from the groupInfo object. If an image hasn't been set, the "profile_default" image will be displayed
+        cell.groupImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "profile_default"), options:  .highPriority, completed: { (image, error, cache, url) in
+            if error != nil {
+                print("MessageViewController: error retrieving profileImage")
+                print("Error: \(error!)")
+            }
+        })
+        
         
         return cell
     }
@@ -133,7 +143,9 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         ref.child("users/\(user!.uid)").observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
                 let userData = snapshot.value as! Dictionary<String,AnyObject>
-                self.userObj = MyUser(email: userData["email"] as? String ?? "", uid: userData["uid"] as? String ?? "", username: userData["username"] as? String ?? "", groups: userData["groups"] as? Dictionary<String,String> ?? Dictionary<String,String>(), profileImageURL: userData["profileImageURL"] as? String ?? "")
+                
+                //initialize userObj with data from Firebase, with default values incase they are nil
+                self.userObj = MyUser(email: userData["email"] as? String ?? "", uid: userData["uid"] as? String ?? "", username: userData["username"] as? String ?? "", groups: userData["groups"] as? Dictionary<String,Bool> ?? Dictionary<String,Bool>(), profileImageURL: userData["profileImageURL"] as? String ?? "")
                 print("user authenticated")
                 self.initializationComplete = true
                 self.retrieveGroups()
@@ -154,7 +166,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                     //create groupInfo struct with data from Firebase, safely unwrap the data with a default value using the nil-coalescing operator "??"
                     // in the case of the timestamp, the value must first be unwrapped as a string, then casted and unwrapped as a double
-                    let groupInfo = GroupInfo(id: data["id"] ?? "", title: data["title"] ?? "", lastMessage: data["lastMessage"] ?? "", timestamp: Double(data["timestamp"] ?? "") ?? 0, profileImageURL: data["profileImageURL"] ?? "")
+                    let groupInfo = GroupInfo(id: data["id"] ?? "", title: data["title"] ?? "", lastMessage: data["lastMessage"] ?? "", timestamp: Double(data["timestamp"] ?? "") ?? 0, groupImageURL: data["groupImageURL"] ?? "")
                     
                     //check if user is already in the group, replace the groupInfo with updated data if they are
                     if let existingGroupIndex = self.groups.index(where: { $0.id == groupInfo.id }) {

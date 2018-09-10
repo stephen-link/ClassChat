@@ -18,7 +18,6 @@ class AddGroupController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var addGroupTableView: UITableView!
     
     let groupIDs = ["CMSC410", "CMSC411", "ENEE324"]
-    let groupDesc = ["a cs course", "another cs course", "an ee course"]
     var userObj : MyUser!
     var ref : DatabaseReference!
     
@@ -54,7 +53,7 @@ class AddGroupController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "addGroupCell", for: indexPath)
-        cell.textLabel?.text = groupDesc[indexPath.row]
+        cell.textLabel?.text = groupIDs[indexPath.row]
         
         return cell
     }
@@ -78,7 +77,7 @@ class AddGroupController: UIViewController, UITableViewDelegate, UITableViewData
                 return false
             } else {
                 let groupID = groupIDs[index]
-                userObj.groups[groupID] = groupDesc[index]
+                userObj.groups[groupID] = true
                 
                 let timestamp = NSDate().timeIntervalSince1970 as NSNumber
                 

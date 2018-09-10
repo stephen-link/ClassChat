@@ -80,6 +80,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.messageTextView.text = ""
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "editGroup" {
+            let destination = segue.destination as! GroupOptionsController
+            destination.group = self.group
+        }
+    }
+    
     
     
     //MARK: - Table and Text View Functions

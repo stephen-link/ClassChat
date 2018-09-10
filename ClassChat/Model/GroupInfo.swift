@@ -13,13 +13,13 @@ struct GroupInfo {
     var title : String
     var lastMessage : String
     var timestamp : Double
-    var profileImageURL : String
+    var groupImageURL : String
     
-    init(id: String, title: String, lastMessage: String, timestamp: Double, profileImageURL: String) {
+    init(id: String, title: String, lastMessage: String, timestamp: Double, groupImageURL: String) {
         self.id = id
         self.title = title
         self.lastMessage = lastMessage
         self.timestamp = timestamp
-        self.profileImageURL = profileImageURL
+        self.groupImageURL = groupImageURL
     }
 }
