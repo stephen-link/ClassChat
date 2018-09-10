@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		055797AE212665E800BAACCE /* AddGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055797AD212665E800BAACCE /* AddGroupController.swift */; };
 		055797B021266E5400BAACCE /* AddGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055797AF21266E5400BAACCE /* AddGroupCell.swift */; };
+		055D81532141751D00131EF0 /* DashboardMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055D81522141751D00131EF0 /* DashboardMenuController.swift */; };
 		056CF7BB2116CA7E00FA2E87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056CF7BA2116CA7E00FA2E87 /* AppDelegate.swift */; };
 		056CF7C02116CA7E00FA2E87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 056CF7BE2116CA7E00FA2E87 /* Main.storyboard */; };
 		056CF7C22116CA7E00FA2E87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 056CF7C12116CA7E00FA2E87 /* Assets.xcassets */; };
@@ -27,6 +28,7 @@
 		057BC579211F73B90079EBBD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 057BC578211F73B80079EBBD /* GoogleService-Info.plist */; };
 		057BC57B211FB2700079EBBD /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057BC57A211FB2700079EBBD /* DashboardController.swift */; };
 		057BC57D212284080079EBBD /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057BC57C212284080079EBBD /* GroupCell.swift */; };
+		05AC33782145E2F30007DC18 /* GroupOptionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AC33772145E2F30007DC18 /* GroupOptionsController.swift */; };
 		84F67E3D0DC4C7D068F1796D /* Pods_ClassChatUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74EBABA1B2BC5809801BC84C /* Pods_ClassChatUITests.framework */; };
 		87748CFEB83F728B31EC420E /* Pods_ClassChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77151F39D7C54EAFCC9499B3 /* Pods_ClassChatTests.framework */; };
 		9C4CA10F16D59DA57FBA5DF9 /* Pods_ClassChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CEAE9AD188FB9CAC7D0A5CE /* Pods_ClassChat.framework */; };
@@ -52,6 +54,7 @@
 /* Begin PBXFileReference section */
 		055797AD212665E800BAACCE /* AddGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGroupController.swift; sourceTree = "<group>"; };
 		055797AF21266E5400BAACCE /* AddGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGroupCell.swift; sourceTree = "<group>"; };
+		055D81522141751D00131EF0 /* DashboardMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardMenuController.swift; sourceTree = "<group>"; };
 		056CF7B72116CA7E00FA2E87 /* ClassChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClassChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		056CF7BA2116CA7E00FA2E87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		056CF7BF2116CA7E00FA2E87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -76,6 +79,7 @@
 		057BC578211F73B80079EBBD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		057BC57A211FB2700079EBBD /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		057BC57C212284080079EBBD /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
+		05AC33772145E2F30007DC18 /* GroupOptionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupOptionsController.swift; sourceTree = "<group>"; };
 		1C109C62D33B3027A1FAF00B /* Pods-ClassChatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClassChatTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClassChatTests/Pods-ClassChatTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1CEAE9AD188FB9CAC7D0A5CE /* Pods_ClassChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClassChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		56C58997CFC6D8C934BC2AA5 /* Pods-ClassChatUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClassChatUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ClassChatUITests/Pods-ClassChatUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -201,6 +205,8 @@
 				057BC57A211FB2700079EBBD /* DashboardController.swift */,
 				055797AD212665E800BAACCE /* AddGroupController.swift */,
 				05768C63213C81AC00C3E6A8 /* ChatViewController.swift */,
+				055D81522141751D00131EF0 /* DashboardMenuController.swift */,
+				05AC33772145E2F30007DC18 /* GroupOptionsController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -426,6 +432,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-ClassChat/Pods-ClassChat-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -433,6 +440,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -449,8 +457,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0576293D2131C47D0053E934 /* GroupInfo.swift in Sources */,
+				055D81532141751D00131EF0 /* DashboardMenuController.swift in Sources */,
 				056CF7F22117FC6600FA2E87 /* RegisterController.swift in Sources */,
 				055797B021266E5400BAACCE /* AddGroupCell.swift in Sources */,
+				05AC33782145E2F30007DC18 /* GroupOptionsController.swift in Sources */,
 				056CF7EC2117F4C900FA2E87 /* RoundedButton.swift in Sources */,
 				056CF7F02117FC5300FA2E87 /* SignInController.swift in Sources */,
 				056CF7BB2116CA7E00FA2E87 /* AppDelegate.swift in Sources */,

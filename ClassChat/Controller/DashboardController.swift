@@ -75,19 +75,34 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: - Table View Functions
     
+    //There should be as many cells as there are Groups the user is a member of
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groups.count
     }
     
+    //groupInfo objects in groups array will be already sorted by timestamp, display the information in the UI
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "groupCell", for: indexPath) as! GroupCell
         let groupInfo = self.groups[indexPath.row]
         cell.groupTitleLabel.text = groupInfo.title
         cell.lastMessageLabel.text = groupInfo.lastMessage
         cell.timestampLabel.text = formatTime(timestamp: groupInfo.timestamp)
+        
+        let url = URL(string: groups[indexPath.row].groupImageURL)
+        
+        //set the group image with the url from the groupInfo object. If an image hasn't been set, the "profile_default" image will be displayed
+        cell.groupImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "profile_default"), options:  .highPriority, completed: { (image, error, cache, url) in
+            if error != nil {
+                print("MessageViewController: error retrieving profileImage")
+                print("Error: \(error!)")
+            }
+        })
+        
+        
         return cell
     }
     
+    //If a group is selected, segue to ChatViewController
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.selectedGroup = self.groups[indexPath.row]
         performSegue(withIdentifier: "chatSelected", sender: self)
@@ -97,9 +112,12 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //format timestamps stored in Firebase to human readable time
     func formatTime(timestamp: Double) -> String {
+       
+       
         let currentTime = Date().timeIntervalSince1970
         let lastMessageDate = Date(timeIntervalSince1970: timestamp)
         let time = self.formatter.string(from: lastMessageDate)
+         //the formatter will date as well as time, seperated by a ;
         let dateTime = time.split(separator: ";")
         
         let timeDifference = currentTime - timestamp
@@ -112,6 +130,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    //once the user is received from AppDelegate, retrieve their info from firebase
     func authenticateUser() {
         print("authenticate user called")
         print("uid: \(user!.uid)")
@@ -124,7 +143,9 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         ref.child("users/\(user!.uid)").observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
                 let userData = snapshot.value as! Dictionary<String,AnyObject>
-                self.userObj = MyUser(email: userData["email"] as? String ?? "", password: userData["password"] as? String ?? "", uid: userData["uid"] as? String ?? "", username: userData["username"] as? String ?? "", groups: userData["groups"] as? Dictionary<String,String> ?? Dictionary<String,String>())
+                
+                //initialize userObj with data from Firebase, with default values incase they are nil
+                self.userObj = MyUser(email: userData["email"] as? String ?? "", uid: userData["uid"] as? String ?? "", username: userData["username"] as? String ?? "", groups: userData["groups"] as? Dictionary<String,Bool> ?? Dictionary<String,Bool>(), profileImageURL: userData["profileImageURL"] as? String ?? "")
                 print("user authenticated")
                 self.initializationComplete = true
                 self.retrieveGroups()
@@ -134,7 +155,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
     }
-    
+    //Retrieve group info and setup observers on the user's subscribed groups
     func retrieveGroups() {
         self.numberGroups = self.userObj!.groups.count
         
@@ -145,7 +166,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                     //create groupInfo struct with data from Firebase, safely unwrap the data with a default value using the nil-coalescing operator "??"
                     // in the case of the timestamp, the value must first be unwrapped as a string, then casted and unwrapped as a double
-                    let groupInfo = GroupInfo(id: data["id"] ?? "", title: data["title"] ?? "", lastMessage: data["lastMessage"] ?? "", timestamp: Double(data["timestamp"] ?? "") ?? 0, profileImageURL: data["profileImageURL"] ?? "")
+                    let groupInfo = GroupInfo(id: data["id"] ?? "", title: data["title"] ?? "", lastMessage: data["lastMessage"] ?? "", timestamp: Double(data["timestamp"] ?? "") ?? 0, groupImageURL: data["groupImageURL"] ?? "")
                     
                     //check if user is already in the group, replace the groupInfo with updated data if they are
                     if let existingGroupIndex = self.groups.index(where: { $0.id == groupInfo.id }) {
@@ -156,6 +177,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
                         self.groups.append(groupInfo)
                     }
                     
+                    //if all groups have been retrieved and are being observed, sort the groups by timestamps, and then display in tableView
                     if self.groups.count == self.numberGroups {
                         print("all groups retrieved, sorting")
                         self.groups.sort(by: self.sortGroupInfo(this:that:))
@@ -189,15 +211,11 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: - Navigation
     
     //logout user
-    @IBAction func logoutButtonPressed(_ sender: UIBarButtonItem) {
-        do {
-            try Auth.auth().signOut()
-            print("Logout Successful!")
-        } catch {
-            print("Logout: there's a problem")
-        }
-    }
     
+    
+    
+    
+    //Send information to view controller based on which one is being segued to
     override func  prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "dashToAdd" {
             let destination = segue.destination as! AddGroupController
@@ -211,6 +229,13 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             if let selectedGroupUnW = self.selectedGroup {
                 destination.group = selectedGroupUnW
+            }
+        } else if segue.identifier == "menuOpened" {
+            let destination = segue.destination as! DashboardMenuController
+            if let userObjUnW = self.userObj {
+                destination.userObj = userObjUnW
+            } else {
+                destination.userObj = MyUser()
             }
         }
     }

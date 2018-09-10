@@ -10,6 +10,9 @@ target 'ClassChat' do
     pod 'Firebase/Core'
     pod 'Firebase/Auth'
     pod 'Firebase/Database'
+    pod 'Firebase/Storage'
+    pod 'SDWebImage'
+    
   target 'ClassChatTests' do
     inherit! :search_paths
     # Pods for testing
