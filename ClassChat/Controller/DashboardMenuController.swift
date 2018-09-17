@@ -114,6 +114,7 @@ class DashboardMenuController: UIViewController, UIImagePickerControllerDelegate
         dismiss(animated: true, completion: nil)
     }
     
+    //upload group image to Firebase Storage, and store the URL in the group object
     func setProfileImage(image: UIImage) {
         let data = UIImagePNGRepresentation(image)
         let storageRef = Storage.storage().reference(withPath: "profileImages/\(userObj.uid).png")
@@ -131,6 +132,7 @@ class DashboardMenuController: UIViewController, UIImagePickerControllerDelegate
         })
     }
     
+    //retrieve the user's profile image from using the stored URL, and SDWebImage
     func retrieveProfileImage() {
 
         print("retrieving profile image")
@@ -142,7 +144,7 @@ class DashboardMenuController: UIViewController, UIImagePickerControllerDelegate
         // Download, cache, and set the image with SDWebImage
         profileImageView.sd_setImage(with: profURL, placeholderImage: self.defaultImage, options:  .highPriority, completed: { (image, error, cache, url) in
             if error != nil {
-                print("ProfileViewController: Error downloading profile image - 96")
+                print("DashboardMenuController: Error downloading profile image")
                 print("error: \(error!)")
                 
             } else {
@@ -151,14 +153,5 @@ class DashboardMenuController: UIViewController, UIImagePickerControllerDelegate
         })
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

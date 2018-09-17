@@ -54,13 +54,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if userObj != nil {
-            print("fdafa \(userObj!.groups.keys.count)")
-            for key in userObj!.groups.keys {
-                print("key: \(key), value: \(userObj!.groups[key]!)")
-            }
-            print("printed")
-        }
+        
         print("Dashboard Controller viewWillAppear")
         navigationController?.setNavigationBarHidden(false, animated: true)
         //if the view appears and the userObj is initialized, retrieve groups. This check must be made, since the first time the view appears the user will not yet be initialized. In this case, retrieve groups will be called in the completion block of authenticateUser()
@@ -91,9 +85,10 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
         let url = URL(string: groups[indexPath.row].groupImageURL)
         
         //set the group image with the url from the groupInfo object. If an image hasn't been set, the "profile_default" image will be displayed
+        //Note: if a image has not been set, a "nil url" error will be received, but this just means the default photo will be used
         cell.groupImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "profile_default"), options:  .highPriority, completed: { (image, error, cache, url) in
             if error != nil {
-                print("MessageViewController: error retrieving profileImage")
+                print("DashboardController: error retrieving profileImage")
                 print("Error: \(error!)")
             }
         })
@@ -170,10 +165,10 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                     //check if user is already in the group, replace the groupInfo with updated data if they are
                     if let existingGroupIndex = self.groups.index(where: { $0.id == groupInfo.id }) {
-                        print("Note: already in group")
+                        
                         self.groups[existingGroupIndex] = groupInfo
                     }  else {
-                        print("appending")
+                        print("appending \(groupInfo.title)")
                         self.groups.append(groupInfo)
                     }
                     
@@ -209,12 +204,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     // MARK: - Navigation
-    
-    //logout user
-    
-    
-    
-    
+
     //Send information to view controller based on which one is being segued to
     override func  prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "dashToAdd" {
@@ -230,6 +220,7 @@ class DashboardController: UIViewController, UITableViewDelegate, UITableViewDat
             if let selectedGroupUnW = self.selectedGroup {
                 destination.group = selectedGroupUnW
             }
+            destination.formatter = self.formatter
         } else if segue.identifier == "menuOpened" {
             let destination = segue.destination as! DashboardMenuController
             if let userObjUnW = self.userObj {

@@ -11,6 +11,8 @@ import UIKit
 //This view basically just holds buttons to segue to the Sign In and Register Views
 class AuthenticationHubController: UIViewController {
 
+    //MARK: - View Controller Functions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,18 +25,10 @@ class AuthenticationHubController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         //Since this view is pushed by a navigationController, I want to hide the navigation bar 
         navigationController?.setNavigationBarHidden(true, animated: true)
+        
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

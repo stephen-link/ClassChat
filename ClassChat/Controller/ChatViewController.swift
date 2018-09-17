@@ -80,15 +80,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.messageTextView.text = ""
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "editGroup" {
-            let destination = segue.destination as! GroupOptionsController
-            destination.group = self.group
-        }
-    }
-    
-    
-    
     //MARK: - Table and Text View Functions
     
     //# cells = # messages
@@ -101,6 +92,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = chatTableView.dequeueReusableCell(withIdentifier: "messageCell") as! MessageCell
         cell.senderLabel.text = messages[indexPath.row].sender
         cell.messageLabel.text = messages[indexPath.row].message
+        cell.timestampLabel.text = formatTime(timestamp: messages[indexPath.row].timestamp)
         
         let url = URL(string: messages[indexPath.row].profileImageURL)
         
@@ -143,7 +135,25 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    
+    //format timestamps stored in Firebase to human readable time
+    func formatTime(timestamp: Double) -> String {
+        
+        
+        let currentTime = Date().timeIntervalSince1970
+        let lastMessageDate = Date(timeIntervalSince1970: timestamp)
+        let time = self.formatter!.string(from: lastMessageDate)
+        //the formatter will date as well as time, seperated by a ;
+        let dateTime = time.split(separator: ";")
+        
+        let timeDifference = currentTime - timestamp
+        
+        //if the timestamp is from more than 24 hours in the past, display a date rather than a time
+        if timeDifference > 86400 {
+            return String(dateTime[0])
+        } else {
+            return String(dateTime[1])
+        }
+    }
     
     // MARK: - Keyboard Animation Functions
     
@@ -231,6 +241,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     func removeDatabaseListener() {
         if let handle = self.messageHandle {
             ref.child("messages/\(group.id)").removeObserver(withHandle: handle)
+        }
+    }
+    
+    //MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "editGroup" {
+            let destination = segue.destination as! GroupOptionsController
+            destination.group = self.group
         }
     }
     
