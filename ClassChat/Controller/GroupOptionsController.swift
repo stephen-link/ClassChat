@@ -25,6 +25,7 @@ class GroupOptionsController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //since this view is always dismissed directly after it is shown, retrieveGroupImage (which needs to be called everytime the view is shown) can be called in viewDidLoad rather than viewWillAppear
         retrieveGroupImage()
         
         navItem.title = group.title
@@ -35,11 +36,12 @@ class GroupOptionsController: UIViewController, UIImagePickerControllerDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    //MARK: - Image Picker Functions
-    
+    //present image picker when edit Image button is pressed
     @IBAction func editGroupImagePressed(_ sender: Any) {
         presentImagePicker()
     }
+    
+    //MARK: - Image Picker Functions
     
     func presentImagePicker() {
         let picker = UIImagePickerController()
@@ -73,13 +75,20 @@ class GroupOptionsController: UIViewController, UIImagePickerControllerDelegate,
         dismiss(animated: true, completion: nil)
     }
     
+    //MARK: - Group Image Functions
+    
+    //upload group image to Firebase Storage, and store the URL in the group object
     func setGroupImage(image: UIImage) {
         let data = UIImagePNGRepresentation(image)
+        
+        //upload image to Firebase Storage
         let storageRef = Storage.storage().reference(withPath: "groupImages/\(group.id).png")
         storageRef.putData(data!, metadata: nil, completion: { (metadata, error) in
             if error != nil {
                 print("ProfileViewController: Error uploading profile image")
             } else {
+                
+                //store URL to Firebase in upload completion block
                 let urlData = ["groupImageURL": "\(metadata!.downloadURL()!)"]
                 let groupRef = Database.database().reference().child("groups/\(self.group.id)")
                 
@@ -89,10 +98,10 @@ class GroupOptionsController: UIViewController, UIImagePickerControllerDelegate,
         })
     }
     
+    //download group Image using the url stored in GorupInfo, with default profile image as a default
     func retrieveGroupImage() {
         let url = URL(string: group.groupImageURL)
         
-        //set the profile image with the url from the user who sent the message. If they haven't set a profile image, the "profile_default" image will be displayed
         groupImageView.sd_setImage(with: url, placeholderImage: UIImage(named: "profile_default"), options:  .highPriority, completed: { (image, error, cache, url) in
             if error != nil {
                 print("GroupOptionsController: error retrieving groupImage")

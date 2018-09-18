@@ -17,7 +17,7 @@ class AddGroupController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var addGroupTableView: UITableView!
     
-    let groupIDs = ["CMSC410", "CMSC411", "ENEE324"]
+    let groupIDs = ["CMSC410", "CMSC411", "ENEE324","ENEE446","MATH461"]
     var userObj : MyUser!
     var ref : DatabaseReference!
     
@@ -43,6 +43,10 @@ class AddGroupController: UIViewController, UITableViewDelegate, UITableViewData
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func doneButtonPressed(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
     
     //MARK: - Table View Functions
@@ -82,7 +86,7 @@ class AddGroupController: UIViewController, UITableViewDelegate, UITableViewData
                 let timestamp = NSDate().timeIntervalSince1970 as NSNumber
                 
                 //update the database with relevant data
-                let userData = [groupID : "yes"]
+                let userData = [groupID : true]
                 let groupData = ["lastMessage" : "\(userObj.username) has joined the group.", "timestamp" : "\(timestamp)"]
                 let memberData = ["name" : userObj.username, "uid" : userObj.uid]
                 let messageData = ["message" : "\(userObj.username) has joined the group.", "timestamp" : "\(timestamp)", "sender" : "admin", "senderUID" : "\(userObj.uid)", "profileImageURL" : ""]
