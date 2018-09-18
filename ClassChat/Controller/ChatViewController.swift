@@ -226,7 +226,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             ref.child("messages/\(group.id)").childByAutoId().setValue(messageData)
             
             //update groupDB
-            let groupData = ["lastMessage" : message, "timestamp" : "\(timestamp)"]
+            let groupData = ["lastMessage" : "\(userObjUnW.username): \(message)", "timestamp" : "\(timestamp)"]
             ref.child("groups/\(group.id)").updateChildValues(groupData)
             
             //reset size of container view elements in case they have been resized due to the length of the message

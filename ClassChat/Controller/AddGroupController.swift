@@ -17,7 +17,7 @@ class AddGroupController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var addGroupTableView: UITableView!
     
-    let groupIDs = ["CMSC410", "CMSC411", "ENEE324"]
+    let groupIDs = ["CMSC410", "CMSC411", "ENEE324","ENEE446","MATH461"]
     var userObj : MyUser!
     var ref : DatabaseReference!
     
