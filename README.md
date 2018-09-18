@@ -1,8 +1,10 @@
 # ClassChat
 
-ClassChat is GroupChat app for iOS developed using Swift and Google's Firebase Realtime Database. I encourage you to clone the project and run it for yourself (remember to run pod install in the main working directory!), but if you just want to look at the code, DashboardController.swift and ChatViewController.swift best illustrate the skills utilized for this project.
+ClassChat is GroupChat app for iOS developed using Swift and Google's Firebase Realtime Database. The motivation for this app is to allow students to join group chats for their courses. If you just want to look at the code, DashboardController.swift and ChatViewController.swift best illustrate the skills utilized for this project. Also be sure to scroll down and look at the images below!
 
-**NOTE: The constraints are currently optimized for iPhone 8. I will be adding additonal constraints so that the UI is consistent on all iPhone generations.**
+**NOTE: The constraints are currently optimized for iPhone 8.**
+
+**NOTE #2: There are currently 23 warnings from Firebase's GTMSessionFetcher implicitly retaining 'self'. This seems to be a Firebase bug dealing with the Podfile. More info on this issue can be found [here](https://github.com/firebase/FirebaseUI-iOS/issues/271).**
 
 ## Skills Utilized
 - Object Oriented Programming (Swift)
@@ -11,7 +13,7 @@ ClassChat is GroupChat app for iOS developed using Swift and Google's Firebase R
 
 - UI Implementation - Navigation Controllers, View Controllers, Table View Controllers, Delegates, Segues, Gestures, etc.
 
-- Firebase Realtime Database - Authorization, Database Observers, Callbacks, Error Handling, etc. 
+- Firebase Realtime Database - Authorization, Database Observers, Callbacks, Error Handling, Parsing JSON-like data, etc. 
 
 - Firebase Storage - Uploading and downloading images via URL
 
@@ -29,8 +31,8 @@ Database Schema with One User
 
 Dashboard View 
 
-![Imgur](https://i.imgur.com/qd2TTxy.png)
+![Imgur](https://i.imgur.com/9nOep12.png)
 
 Chat View
 
-![Imgur](https://i.imgur.com/y7G7uX6.png)
+![Imgur](https://i.imgur.com/wm5kcRZ.png)
