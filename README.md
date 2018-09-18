@@ -2,6 +2,8 @@
 
 ClassChat is GroupChat app for iOS developed using Swift and Google's Firebase Realtime Database. I encourage you to clone the project and run it for yourself (remember to run pod install in the main working directory!), but if you just want to look at the code, DashboardController.swift and ChatViewController.swift best illustrate the skills utilized for this project.
 
+**NOTE: The constraints are currently optimized for iPhone 8. I will be adding additonal constraints so that the UI is consistent on all iPhone generations.**
+
 ## Skills Utilized
 - Object Oriented Programming (Swift)
 
@@ -13,7 +15,7 @@ ClassChat is GroupChat app for iOS developed using Swift and Google's Firebase R
 
 - Firebase Storage - Uploading and downloading images via URL
 
-- Cocoapods (Firebase)
+- Cocoapods (Firebase, SDWebImage)
 
 ## Progress
 
